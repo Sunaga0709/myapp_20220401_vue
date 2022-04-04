@@ -5,6 +5,7 @@ const url = "http://localhost:3000/events";
 const state = {
   events: [],
   event: null,
+  isEditEvent: false,
 };
 
 const getters = {
@@ -20,11 +21,13 @@ const getters = {
     start: new Date(state.event.start),
     end: new Date(state.event.end)
   } : null,
+  isEditEvent: state => state.isEditEvent,
 };
 
 const mutations = {
   setEvents: (state, events) => (state.events = events),
   setEvent: (state, event) => (state.event = event),
+  setEditEvent: (state, bool) => (state.isEditEvent = bool),
 };
 
 const actions = {
@@ -34,7 +37,10 @@ const actions = {
   },
   setEvent({ commit }, event){
     commit('setEvent', event)
-  }
+  },
+  setEditEvent({ commit }, bool){
+    commit('setEditEvent', bool)
+  },
 };
 
 export default {

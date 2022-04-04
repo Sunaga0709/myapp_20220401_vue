@@ -20,84 +20,57 @@
         :day-format="(timestamp) => new Date(timestamp.date).getDate()"
         :month-format="(timestamp) => (new Date(timestamp.date).getMonth() + 1) + ' /'"
         @click:event="showEvent"
+        @click:day="initEvent"
       ></v-calendar>
     </v-sheet>
 
     <v-dialog :value="event !== null" @click:outside="closeDialog" width="600">
-        <div v-if="event !== null">
-          <v-card class="pb-12">
-            <v-card-actions class="d-flex justify-end pa-2">
-              <v-btn icon @click="closeDialog">
-                <v-icon size="20px">mdi-close</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-card-title>
-              <v-row>
-                <v-col cols="2" class="d-flex justify-center align-center">
-                  <v-icon size="20px" :color="event.color || 'blue'">mdi-square</v-icon>
-                </v-col>
-
-                <v-col class="d-flex align-center">
-                  {{ event.name }}
-                </v-col>
-              </v-row>
-            </v-card-title>
-
-            <v-card-text>
-              <v-row>
-                <v-col cols="2" class="d-flex justify-center align-center">
-                  <v-icon size="20px">mdi-clock-time-three-outline</v-icon>
-                </v-col>
-
-                <v-col class="d-flex align-center">
-                  {{ event.start.toLocaleString() }} ~ {{ event.end.toLocaleString() }}
-                </v-col>
-              </v-row>
-            </v-card-text>
-
-            <v-card-text>
-              <v-row>
-                <v-col cols="2" class="d-flex justify-center align-center">
-                  <v-icon size="20px">mdi-card-text-outline</v-icon>
-                </v-col>
-
-                <v-col class="d-flex align-center">
-                  {{ event.description || 'no description' }}
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </div>
-      </v-dialog>
+      <EventDialog v-if="event !== null && !isEditEvent" />
+      <EventFormDialog v-if="event !== null && isEditEvent" />
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import { format } from 'date-fns';
-import { mapGetters, mapActions } from "vuex";
+import { format } from 'date-fns'
+import { mapGetters, mapActions } from "vuex"
+import EventDialog from './EventDialog.vue'
+import EventFormDialog from './EventFormDialog'
 
 export default {
   name: "Calendar",
   data: () => ({
     value: format(new Date(), 'yyyy/MM/dd'),
   }),
+  components: {
+    EventDialog,
+    EventFormDialog,
+  },
   computed: {
-    ...mapGetters("events", ["events", "event"]),
+    ...mapGetters("events", ["events", "event", "isEditEvent"]),
     title(){
       return format(new Date(this.value), 'yyyy年 M月')
     },
   },
   methods: {
-    ...mapActions("events", ["fetchEvents", "setEvent"]),
+    ...mapActions("events", ["fetchEvents", "setEvent", "setEditEvent"]),
     setToday(){
       this.value = format(new Date(), 'yyyy/MM/dd')
     },
-    showEvent({ event }){
+    showEvent({ nativeEvent, event }){
       this.setEvent(event)
+      nativeEvent.stopPropagation()
     },
     closeDialog(){
       this.setEvent(null)
+      this.setEditEvent(false)
+    },
+    initEvent({ date }){
+      date = date.replace(/-/g, '/')
+      const start = format(new Date(date), 'yyyy/MM/dd 00:00:00')
+      const end = format(new Date(date), 'yyyy/MM/dd 00:00:00')
+      this.setEvent({name: '', start, end,timed: true})
+      this.setEditEvent(true)
     },
   },
 };
