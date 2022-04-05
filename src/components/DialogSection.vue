@@ -4,7 +4,7 @@
       <v-icon size="20px" :color="color">{{ icon }}</v-icon>
     </v-col>
 
-    <v-col class="d-flex align-center">
+    <v-col cols="9" class="d-flex align-center">
       <slot></slot>
     </v-col>
   </v-row>

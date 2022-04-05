@@ -7,7 +7,7 @@
     </template>
 
     <v-list height="300px" class="overflow-y-auto">
-      <v-list-item v-for="(time, i) in times" :key="i" @click="$emit(('imput', time))">
+      <v-list-item v-for="(time, i) in times" :key="i" @click="$emit('input', time)">
         {{ time }}
       </v-list-item>
     </v-list>

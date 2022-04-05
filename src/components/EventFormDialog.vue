@@ -6,20 +6,33 @@
       </v-btn>
     </v-card-actions>
 
-    <v-card-text>
-      <DialogSection icon="mdi-circle" :color="event.color">
-        <v-text-field v-model="name" label="イベント名"></v-text-field>
+    <v-card-text class="pl-0">
+      <DialogSection icon="mdi-circle" :color="color" class="pl-1">
+        <v-text-field v-model="name" label="イベント名" class="pl-1"></v-text-field>
       </DialogSection>
     </v-card-text>
 
     <DialogSection icon="mdi-clock-outline">
-      <DateForm v-model="startDate" />
-      <TimeForm v-model="startTime" />
-      <DateForm v-model="endDate" />
-      <TimeForm v-model="endTime" />
+      <div>
+        <DateForm v-model="startDate" />
+        <TimeForm v-model="startTime" />
+      </div>
+      <span>〜</span>
+      <div>
+        <DateForm v-model="endDate" />
+        <TimeForm v-model="endTime" />
+      </div>
     </DialogSection>
 
-    <v-card-actions class="d-flex justify-end mr-4">
+    <DialogSection icon="mdi-card-text-outline">
+      <TextForm v-model="description" />
+    </DialogSection>
+
+    <DialogSection icon="mdi-palette">
+      <ColorForm v-model="color" />
+    </DialogSection>
+
+    <v-card-actions class="d-flex justify-center">
       <v-btn @click="submit">保存</v-btn>
     </v-card-actions>
   </v-card>
@@ -30,6 +43,8 @@ import { mapActions, mapGetters } from 'vuex'
 import DialogSection from './DialogSection.vue'
 import DateForm from './DateForm.vue'
 import TimeForm from './TimeForm.vue'
+import TextForm from './TextForm.vue'
+import ColorForm from './ColorForm.vue'
 
 export default{
   name: 'EventFormDialog',
@@ -37,6 +52,8 @@ export default{
     DialogSection,
     DateForm, 
     TimeForm,
+    TextForm,
+    ColorForm,
   },
   data: () => ({
     name: '',
@@ -44,6 +61,8 @@ export default{
     startTime: null,
     endDate: null,
     endTime: null,
+    description: '',
+    color: '',
   }),
   computed: {
     ...mapGetters('events', ['event'])
@@ -59,6 +78,8 @@ export default{
         name: this.name,
         start: `${this.startDate} ${this.startTime} || ''`,
         end: `${this.endDate} ${this.endTime} || ''`,
+        description: this.description,
+        color: this.color,
       }
       this.createEvent(params)
       this.closeDialog()
@@ -68,7 +89,8 @@ export default{
     this.startDate = this.event.startDate,
     this.startTime = this.event.startTime,
     this.endDate = this.event.endDate,
-    this.endTime = this.event.endTime
+    this.endTime = this.event.endTime,
+    this.color = this.event.color
   }
 }
 </script>
