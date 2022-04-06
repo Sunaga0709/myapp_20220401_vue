@@ -18,9 +18,9 @@
       </DialogSection>
     </v-card-text>
 
-    <v-card-text>
+    <v-card-text v-if="event.memo">
       <DialogSection icon="mdi-card-text-outline">
-        {{ event.description || 'no description' }}
+        {{ event.memo }}
       </DialogSection>
     </v-card-text>
   </v-card>

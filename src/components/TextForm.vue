@@ -5,7 +5,7 @@
     auto-grow
     :value="value"
     @input="$emit('input', $event)"
-    placeholder="説明"
+    placeholder="メモ"
     rows='4'
   ></v-textarea>
 </template>

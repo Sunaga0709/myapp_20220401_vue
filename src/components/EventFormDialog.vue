@@ -25,7 +25,7 @@
     </DialogSection>
 
     <DialogSection icon="mdi-card-text-outline">
-      <TextForm v-model="description" />
+      <TextForm v-model="memo" />
     </DialogSection>
 
     <DialogSection icon="mdi-palette">
@@ -61,7 +61,7 @@ export default{
     startTime: null,
     endDate: null,
     endTime: null,
-    description: '',
+    memo: '',
     color: '',
   }),
   computed: {
@@ -78,7 +78,7 @@ export default{
         name: this.name,
         start: `${this.startDate} ${this.startTime} || ''`,
         end: `${this.endDate} ${this.endTime} || ''`,
-        description: this.description,
+        memo: this.memo,
         color: this.color,
       }
       this.createEvent(params)
