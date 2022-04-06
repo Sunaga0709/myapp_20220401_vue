@@ -32,10 +32,11 @@
 </template>
 
 <script>
+import { getDefaultTime } from '../functions/time.js'
 import { format } from 'date-fns'
 import { mapGetters, mapActions } from "vuex"
 import EventDialog from './EventDialog.vue'
-import EventFormDialog from './EventFormDialog'
+import EventFormDialog from './EventFormDialog.vue'
 
 export default {
   name: "Calendar",
@@ -67,9 +68,8 @@ export default {
     },
     initEvent({ date }){
       date = date.replace(/-/g, '/')
-      const start = format(new Date(date), 'yyyy/MM/dd 00:00:00')
-      const end = format(new Date(date), 'yyyy/MM/dd 00:00:00')
-      this.setEvent({name: '', start, end,timed: true})
+      const [start, end] = getDefaultTime(date)
+      this.setEvent({name: '', start, end})
       this.setEditEvent(true)
     },
   },

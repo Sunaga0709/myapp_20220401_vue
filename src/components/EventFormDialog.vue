@@ -33,13 +33,17 @@
     </DialogSection>
 
     <v-card-actions class="d-flex justify-center">
-      <v-btn @click="submit">保存</v-btn>
+      <v-btn @click="submit" :disabled="isInvalid">保存</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
+import { checkEndTime } from '../functions/time.js'
+
 import DialogSection from './DialogSection.vue'
 import DateForm from './DateForm.vue'
 import TimeForm from './TimeForm.vue'
@@ -48,6 +52,7 @@ import ColorForm from './ColorForm.vue'
 
 export default{
   name: 'EventFormDialog',
+  mixins: [validationMixin],
   components: {
     DialogSection,
     DateForm, 
@@ -55,17 +60,28 @@ export default{
     TextForm,
     ColorForm,
   },
+  validations: {
+    name: { required },
+    startDate: { required },
+    endDate: { required },
+  },
   data: () => ({
     name: '',
     startDate: null,
     startTime: null,
     endDate: null,
     endTime: null,
-    memo: '',
+    memo: null,
     color: '',
   }),
   computed: {
-    ...mapGetters('events', ['event'])
+    ...mapGetters('events', ['event']),
+    isInvalidEndTime(){
+      return !checkEndTime(this.startDate, this.startTime, this.endDate, this.endTime)
+    },
+    isInvalid(){
+      return this.$v.$invalid || this.isInvalidEndTime
+    },
   },
   methods: {
     ...mapActions('events', ['setEvent', 'setEditEvent', 'createEvent']),
@@ -74,6 +90,9 @@ export default{
       this.setEditEvent(false)
     },
     submit(){
+      if(this.isInvalid){
+        return
+      }
       const params = {
         name: this.name,
         start: `${this.startDate} ${this.startTime} || ''`,

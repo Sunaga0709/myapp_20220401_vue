@@ -9,10 +9,17 @@ export const getTimeList = () => {
 }
 
 export const getDefaultTime = date => {
-  const time = format(new Date(), 'HH:mm:ss');
+  const time = format(new Date(), 'HH:mm');
   const now = new Date(`${date} ${time}`);
-  const start = format(addHours(now, 1), 'yyyy/MM/dd HH:00:00');
-  const end = format(addHours(now, 2),  'yyyy/MM/dd HH:00:00');
+  const start = format(addHours(now, 1), 'yyyy/MM/dd HH:00');
+  const end = format(addHours(now, 2),  'yyyy/MM/dd HH:00');
 
-  return (start, end);
+  return [start, end];
+}
+
+export const checkEndTime = (startDate, startTime, endDate, endTime) => {
+  const start = new Date(`${startDate} ${startTime}`).getTime();
+  const end = new Date(`${endDate} ${endTime}`).getTime();
+  
+  return start < end;
 }
