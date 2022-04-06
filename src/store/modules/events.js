@@ -22,6 +22,7 @@ const mutations = {
   addEvent: (state, event) => (state.events = [...state.events, event]),
   deleteEvent: (state, event) => (state.events = state.events.filter(e => e.id !== event.id)),
   resetEvent: state => (state.event = null),
+  updateEvent: (state, event) => (state.events = state.events.map(e => (e.id === event.id ? event : e))),
 };
 
 const actions = {
@@ -42,6 +43,10 @@ const actions = {
   async delEvent({ commit }, id){
     const res = await axios.delete(`${url}/${id}`)
     commit('deleteEvent', res.data)
+  },
+  async updateEvent({ commit }, event){
+    const res = await axios.put(`${url}/${event.id}`, event)
+    commit('updateEvent', res.data)
   },
 };
 

@@ -84,7 +84,7 @@ export default{
     },
   },
   methods: {
-    ...mapActions('events', ['setEvent', 'setEditEvent', 'createEvent']),
+    ...mapActions('events', ['setEvent', 'setEditEvent', 'createEvent', 'updateEvent']),
     closeDialog(){
       this.setEvent(null)
       this.setEditEvent(false)
@@ -94,21 +94,28 @@ export default{
         return
       }
       const params = {
+        ...this.event,
         name: this.name,
         start: `${this.startDate} ${this.startTime} || ''`,
         end: `${this.endDate} ${this.endTime} || ''`,
         memo: this.memo,
         color: this.color,
       }
-      this.createEvent(params)
+      if(params.id){
+        this.updateEvent(params)
+      }else{
+        this.createEvent(params)
+      }
       this.closeDialog()
     },
   },
   created(){
+    this.name = this.event.name,
     this.startDate = this.event.startDate,
     this.startTime = this.event.startTime,
     this.endDate = this.event.endDate,
     this.endTime = this.event.endTime,
+    this.memo = this.event.memo,
     this.color = this.event.color
   }
 }
