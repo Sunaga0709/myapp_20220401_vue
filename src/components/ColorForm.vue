@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex align-center">
     <v-menu offset-y>
+      <!-- カラー選択メニュー -->
       <template v-slot:activator="{ on }">
         <v-btn text v-on="on">
           <v-icon :color="value" size="20px">mdi-square</v-icon>
@@ -8,6 +9,7 @@
         </v-btn>
       </template>
 
+      <!-- カラー選択 -->
       <v-color-picker
         hide-canvas
         hide-inputs

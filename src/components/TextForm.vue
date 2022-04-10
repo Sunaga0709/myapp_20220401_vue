@@ -1,4 +1,5 @@
 <template>
+  <!-- メモ欄 -->
   <v-textarea
     filled
     rounded

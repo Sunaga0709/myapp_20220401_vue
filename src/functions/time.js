@@ -1,5 +1,6 @@
 import { format, addHours } from 'date-fns';
 
+// 分のリスト
 export const getTimeList = () => {
   const hours = [...Array(24)].map((_, i) => ('0' + i).slice(-2));
   const minutes = ['00', '15', '30', '45'];
@@ -8,6 +9,7 @@ export const getTimeList = () => {
   return timeList
 }
 
+// フォーム用初期値
 export const getDefaultTime = date => {
   const time = format(new Date(), 'HH:mm');
   const now = new Date(`${date} ${time}`);
@@ -17,6 +19,7 @@ export const getDefaultTime = date => {
   return [start, end];
 }
 
+// 終了日時判定
 export const checkEndTime = (startDate, startTime, endDate, endTime) => {
   const start = new Date(`${startDate} ${startTime}`).getTime();
   const end = new Date(`${endDate} ${endTime}`).getTime();

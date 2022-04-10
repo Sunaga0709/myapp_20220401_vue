@@ -14,9 +14,5 @@ export default {
   components: {
     Calendar,
   },
-
-  data: () => ({
-    //
-  }),
 };
 </script>

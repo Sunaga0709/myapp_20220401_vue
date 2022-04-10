@@ -1,15 +1,23 @@
 <template>
   <div>
-    <v-sheet height="6vh" class="d-flex align-center">
-      <v-btn outlined small class="ma-4" @click="setToday">今日</v-btn>
+    <!-- calendar tool bar -->
+    <v-sheet height="6vh" class="d-flex align-center">  
+      <v-btn outlined small class="ma-4" @click="setToday">
+        今日
+      </v-btn>
+
       <v-btn icon>
         <v-icon @click="$refs.calendar.prev()">mdi-chevron-left</v-icon>
       </v-btn>
+
       <v-btn icon @click="$refs.calendar.next()">
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
+
       <v-toolbar-title>{{ title }}</v-toolbar-title>
     </v-sheet>
+
+    <!-- calendar body -->
     <v-sheet height="94vh">
       <v-calendar
         ref="calendar"
@@ -55,18 +63,18 @@ export default {
   },
   methods: {
     ...mapActions("events", ["fetchEvents", "setEvent", "setEditEvent"]),
-    setToday(){
+    setToday(){  // 現在日時
       this.value = format(new Date(), 'yyyy/MM/dd')
     },
-    showEvent({ nativeEvent, event }){
+    showEvent({ nativeEvent, event }){ // イベント表示
       this.setEvent(event)
       nativeEvent.stopPropagation()
     },
-    closeDialog(){
+    closeDialog(){ // イベントダイアログ非表示
       this.setEvent(null)
       this.setEditEvent(false)
     },
-    initEvent({ date }){
+    initEvent({ date }){ // イベントフォーム初期化
       date = date.replace(/-/g, '/')
       const [start, end] = getDefaultTime(date)
       this.setEvent({name: '', start, end})
