@@ -1,14 +1,13 @@
 import axios from "axios";
-import { serializeEvent } from '../../functions/serializers';
 
 // APIのURL
-const eventUrl = "http://localhost:3000/events";
+const sessionUrl = "http://localhost:3000/events";
 
 // 保持データ
 const state = {
-  events: [],
-  event: null,
-  isEditEvent: false,
+  uid: '',
+  access_token: '',
+  client: '',
 };
 
 // stateから取得
@@ -43,7 +42,7 @@ const mutations = {
 
 const actions = {
   async fetchEvents({ commit }) { // APIからイベントを取得
-    const res = await axios.get(eventUrl)
+    const res = await axios.get(url)
     commit("setEvents", res.data)
   },
   setEvent({ commit }, event){ // 編集、閲覧用にイベントを追加
@@ -53,15 +52,15 @@ const actions = {
     commit('setEditEvent', bool)
   },
   async createEvent({ commit }, event){ // イベント作成
-    const res =  await axios.post(eventUrl, event)
+    const res =  await axios.post(url, event)
     commit ('addEvent', res.data)
   },
   async delEvent({ commit }, id){ // イベント削除
-    const res = await axios.delete(`${eventUrl}/${id}`)
+    const res = await axios.delete(`${url}/${id}`)
     commit('deleteEvent', res.data)
   },
   async updateEvent({ commit }, event){ // イベント更新
-    const res = await axios.put(`${eventUrl}/${event.id}`, event)
+    const res = await axios.put(`${url}/${event.id}`, event)
     commit('updateEvent', res.data)
   },
 };
