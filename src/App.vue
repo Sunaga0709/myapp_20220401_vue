@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <v-main>
-      <div v-if="client === ''">
+      <!-- ログイン前 -->
+      <div v-if="client == ''">
+        <!-- ログイン -->
         <div v-if="showLogin">
           <v-container class="mt-7" style="width: 400px;">
             <LoginForm />
@@ -13,6 +15,7 @@
           </v-container>
         </div>
 
+        <!-- サインアップ -->
         <div v-else>
           <v-container class="mt-7" style="width: 400px;">
             <SignupForm />
@@ -25,6 +28,7 @@
         </div>
       </div>
 
+      <!-- ログイン後 -->
       <div v-else>
         <Calendar />
       </div>
@@ -33,22 +37,24 @@
 </template>
 
 <script>
-import Calendar from "./components/Calendar.vue"
-import LoginForm from "./components/LoginForm.vue"
-import SignupForm from "./components/SignupForm.vue"
+import { mapGetters } from 'vuex'
+
+import Calendar from './components/Calendar.vue'
+import LoginForm from './components/LoginForm.vue'
+import SignupForm from './components/SignupForm.vue'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Calendar,
     LoginForm,
     SignupForm,
   },
   data: () => ({
-    uid: "",
-    access_token: "",
-    client: "",
     showLogin: true,
   }),
+  computed: {
+    ...mapGetters('sessions', ['client']),
+  }
 };
 </script>

@@ -1,23 +1,27 @@
 <template>
   <div>
-    <!-- calendar tool bar -->
-    <v-sheet height="6vh" class="d-flex align-center">  
-      <v-btn outlined small class="ma-4" @click="setToday">
-        今日
-      </v-btn>
+    <!-- カレンダーヘッダ -->
+    <v-sheet height="6vh" class="d-flex align-center">
+      <div>
+        <v-btn outlined small class="ma-4" @click="setToday">今日</v-btn>
 
-      <v-btn icon>
-        <v-icon @click="$refs.calendar.prev()">mdi-chevron-left</v-icon>
-      </v-btn>
+        <v-btn icon>
+          <v-icon @click="$refs.calendar.prev()">mdi-chevron-left</v-icon>
+        </v-btn>
 
-      <v-btn icon @click="$refs.calendar.next()">
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
+        <v-btn icon @click="$refs.calendar.next()">
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>        
+      </div>
 
       <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+      <v-row class="justify-end ma-4">
+        <v-btn outlined small class="ma-4" @click="logout">ログアウト</v-btn>
+      </v-row>
     </v-sheet>
 
-    <!-- calendar body -->
+    <!-- カレンダーボディ -->
     <v-sheet height="94vh">
       <v-calendar
         ref="calendar"
@@ -42,12 +46,14 @@
 <script>
 import { getDefaultTime } from '../functions/time.js'
 import { format } from 'date-fns'
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from 'vuex'
+import axios from 'axios'
+
 import EventDialog from './EventDialog.vue'
 import EventFormDialog from './EventFormDialog.vue'
 
 export default {
-  name: "Calendar",
+  name: 'Calendar',
   data: () => ({
     value: format(new Date(), 'yyyy/MM/dd'),
   }),
@@ -56,13 +62,15 @@ export default {
     EventFormDialog,
   },
   computed: {
-    ...mapGetters("events", ["events", "event", "isEditEvent"]),
+    ...mapGetters('events', ['events', 'event', 'isEditEvent']),
+    ...mapGetters('sessions', ['accessToken', 'uid', 'client']),
     title(){
       return format(new Date(this.value), 'yyyy年 M月')
     },
   },
   methods: {
-    ...mapActions("events", ["fetchEvents", "setEvent", "setEditEvent"]),
+    ...mapActions('events', ['fetchEvents', 'setEvent', 'setEditEvent']),
+    ...mapActions('sessions', ['resetHeader']),
     setToday(){  // 現在日時
       this.value = format(new Date(), 'yyyy/MM/dd')
     },
@@ -80,6 +88,19 @@ export default {
       this.setEvent({name: '', start, end})
       this.setEditEvent(true)
     },
+    logout(){
+      axios.delete('http://localhost:3000/auth/sign_out', {
+        headers: {
+          'access-token': this.$store.getters.accessToken,
+          'uid': this.$store.getters.uid,
+          'client': this.$store.getters.client,
+        }
+      })
+      .then(res => {
+        console.log(res)
+        this.resetHeader()
+      })
+    }
   },
 };
 </script>

@@ -5,7 +5,7 @@
     <div v-if="error !== null">
       <p class="red--text">{{ error }}</p>
     </div>
-    
+
     <v-form>
       <v-text-field
         v-model="name"
@@ -43,6 +43,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import axios from 'axios'
+
 export default {
   name: 'SignupForm',
   data() {
@@ -55,29 +58,23 @@ export default {
     };
   },
   methods: {
-    async signUp(){
+    ...mapActions('sessions', ['setHeader']),
+    signUp(){
       this.error = null
-      const res = await axios.post('http://localhost:3000/auth', {
+      axios.post('http://localhost:3000/auth', {
         name: this.name,
         email: this.email,
         password: this.password,
-        password_confirmation: this.password_confirmation,
+        password_confirmation: this.password_confirmation
       })
       .then(res => {
-        if(!res){
-          this.error = 'ユーザを登録出来ませんでした'
+        if(res.status != 200){
+          this.error = 'ユーザ登録に失敗しました'
+        }else{
+          this.setHeader('setHeader', res.headers)
         }
-        console.log(res)
-        this.name = ''
-        this.email = ''
-        this.password = ''
-        this.password_confirmation = ''
-        return res
-      }) 
-      .catch(error => {
-        this.error = 'ユーザを登録出来ませんでした'
       })
-    },
+    }
   },
 };
 </script>

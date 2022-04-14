@@ -54,7 +54,7 @@ const actions = {
   },
   async createEvent({ commit }, event){ // イベント作成
     const res =  await axios.post(eventUrl, event)
-    commit ('addEvent', res.data)
+    commit('addEvent', res.data)
   },
   async delEvent({ commit }, id){ // イベント削除
     const res = await axios.delete(`${eventUrl}/${id}`)

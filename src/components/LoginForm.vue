@@ -16,7 +16,7 @@
 
       <v-text-field
         v-model="password"
-        label="パスワード"
+        label="パスワード(6文字以上)"
         type="password"
         required
       >
@@ -29,6 +29,7 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'LoginForm',
@@ -40,25 +41,21 @@ export default {
     };
   },
   methods: {
-    async login(){
+    ...mapActions('sessions', ['setHeader']),
+    login(){
       this.error = null
-      const res = await axios.post('http://localhost:3000/auth/sign_in', {
+      axios.post('http://localhost:3000/auth/sign_in', {
         email: this.email,
         password: this.password,
       })
       .then(res => {
-        if(!res){
-          this.error = 'ログイン出来ませんでした'
+        if(res.status != 200){
+          this.error = 'ログインできませんでした'
+        }else{
+          this.setHeader('setHeader', res.headers)
         }
-        console.log(res)
-        this.email = ''
-        this.password = ''
-        return res
-      }) 
-      .catch(error => {
-        this.error = 'ログイン出来ませんでした'
       })
-    },
+    }
   },
 };
 </script>
