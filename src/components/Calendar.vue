@@ -62,15 +62,13 @@ export default {
     EventFormDialog,
   },
   computed: {
-    ...mapGetters('events', ['events', 'event', 'isEditEvent']),
-    ...mapGetters('sessions', ['accessToken', 'uid', 'client']),
+    ...mapGetters(['events', 'event', 'isEditEvent', 'client']),
     title(){
       return format(new Date(this.value), 'yyyy年 M月')
     },
   },
   methods: {
-    ...mapActions('events', ['fetchEvents', 'setEvent', 'setEditEvent']),
-    ...mapActions('sessions', ['resetHeader']),
+    ...mapActions(['fetchEvents', 'setEvent', 'setEditEvent', 'deleteClient']),
     setToday(){  // 現在日時
       this.value = format(new Date(), 'yyyy/MM/dd')
     },
@@ -91,14 +89,19 @@ export default {
     logout(){
       axios.delete('http://localhost:3000/auth/sign_out', {
         headers: {
-          'access-token': this.$store.getters.accessToken,
-          'uid': this.$store.getters.uid,
-          'client': this.$store.getters.client,
+          'access-token': localStorage.getItem('access-token'),
+          'uid': localStorage.getItem('uid'),
+          'client': localStorage.getItem('client'),
         }
       })
-      .then(res => {
-        console.log(res)
-        this.resetHeader()
+      .then(() => {
+        // localstorageのヘッダ情報を削除
+        localStorage.removeItem('access-token')
+        localStorage.removeItem('uid')
+        localStorage.removeItem('client')
+
+        // state.clientを削除
+        this.deleteClient()
       })
     }
   },

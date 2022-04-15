@@ -50,10 +50,10 @@ export default{
     DialogSection,
   },
   computed: { // vuexからイベント取得
-    ...mapGetters('events', ['event'])
+    ...mapGetters(['event'])
   },
   methods: {
-    ...mapActions('events', ['setEvent', 'delEvent', 'setEditEvent']),
+    ...mapActions(['setEvent', 'delEvent', 'setEditEvent']),
     closeDialog(){ // イベントダイアログを非表示
       this.setEvent(null)
     },

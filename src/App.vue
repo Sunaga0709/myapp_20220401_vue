@@ -3,7 +3,7 @@
     <v-main>
       <!-- ログイン前 -->
       <div v-if="client == ''">
-        <!-- ログイン -->
+        <!-- ログインページ -->
         <div v-if="showLogin">
           <v-container class="mt-7" style="width: 400px;">
             <LoginForm />
@@ -15,7 +15,7 @@
           </v-container>
         </div>
 
-        <!-- サインアップ -->
+        <!-- サインアップページ -->
         <div v-else>
           <v-container class="mt-7" style="width: 400px;">
             <SignupForm />
@@ -54,7 +54,7 @@ export default {
     showLogin: true,
   }),
   computed: {
-    ...mapGetters('sessions', ['client']),
+    ...mapGetters(['client']),
   }
 };
 </script>

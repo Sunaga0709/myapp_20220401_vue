@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { mapActions } from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'LoginForm',
@@ -41,19 +41,28 @@ export default {
     };
   },
   methods: {
-    ...mapActions('sessions', ['setHeader']),
+    ...mapActions(['addClient']),
     login(){
-      this.error = null
-      axios.post('http://localhost:3000/auth/sign_in', {
+      this.error = null  // エラー初期化
+      axios.post('http://localhost:3000/auth/sign_in', {  // ログイン
         email: this.email,
         password: this.password,
       })
-      .then(res => {
-        if(res.status != 200){
+      .then(res => {  // 失敗の時 
+        if(res.status !== 200){
           this.error = 'ログインできませんでした'
-        }else{
-          this.setHeader('setHeader', res.headers)
         }
+
+        // localStorageにヘッダを保存
+        localStorage.setItem('access-token', res.headers['access-token'])
+        localStorage.setItem('uid', res.headers['uid'])
+        localStorage.setItem('client', res.headers['client'])
+
+        // state.client登録
+        this.addClient(res.headers['client'])
+      })
+      .catch(() => {
+        this.error = 'ログインできませんでした'
       })
     }
   },

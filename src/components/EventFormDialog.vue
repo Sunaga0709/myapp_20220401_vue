@@ -85,7 +85,7 @@ export default{
     color: '',
   }),
   computed: {
-    ...mapGetters('events', ['event']), // イベント取得
+    ...mapGetters(['event']), // イベント取得
     isInvalidEndTime(){ // 終了日時をチェック
       return !checkEndTime(this.startDate, this.startTime, this.endDate, this.endTime)
     },
@@ -94,7 +94,7 @@ export default{
     },
   },
   methods: {
-    ...mapActions('events', ['setEvent', 'setEditEvent', 'createEvent', 'updateEvent']),
+    ...mapActions(['setEvent', 'setEditEvent', 'createEvent', 'updateEvent']),
     closeDialog(){ // イベントダイアログ非表示
       this.setEvent(null)
       this.setEditEvent(false)

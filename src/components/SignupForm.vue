@@ -58,7 +58,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('sessions', ['setHeader']),
+    ...mapActions(['addClient']),
     signUp(){
       this.error = null
       axios.post('http://localhost:3000/auth', {
@@ -68,11 +68,20 @@ export default {
         password_confirmation: this.password_confirmation
       })
       .then(res => {
-        if(res.status != 200){
-          this.error = 'ユーザ登録に失敗しました'
-        }else{
-          this.setHeader('setHeader', res.headers)
+        if(res.status != 200){  // 失敗の時
+          this.error = 'ユーザを登録できませんでした'
         }
+        
+        // localStorageにヘッダを保存
+        localStorage.setItem('access-token', res.headers['access-token'])
+        localStorage.setItem('uid', res.headers['uid'])
+        localStorage.setItem('client', res.headers['client'])
+
+        // state.client登録
+        this.addClient(res.headers['client'])
+      })
+      .catch(() => {
+        this.error = 'ユーザを登録できませんでした'
       })
     }
   },

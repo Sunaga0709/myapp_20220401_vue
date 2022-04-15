@@ -1,37 +1,39 @@
 // 保持データ
 const state = {
   // ヘッダ情報
-  accessToken: '',
-  uid: '',
-  client: ''
+  header: {
+    uid: '',
+    client: '',
+    accessToken: '',
+  }
 };
 
 // stateから取得
 const getters = {
-  client: state => state.client,
-  uid: state => state.uid,
-  accessToken: state => state.accessToken
+  client: state => state.header.client,
+  uid: state => state.header.uid,
+  accessToken: state => state.header.accessToken
 };
 
 const mutations = {
-  login(state, headers){  // ログイン時のレスポンスからヘッダ情報を取得、保持
-    state.accessToken = headers['access-token'],
-    state.client = headers['client'],
-    state.uid = headers['uid']
+  setHeader(state, headers){ // stateにヘッダ情報を保持
+    state.header.uid = headers.uid,
+    state.header.client = headers.client,
+    state.header.accessToken = headers['access-token']
   },
-  logout(state){ // ヘッダ情報を削除
-    state.headers.accessToken = '',
-    state.headers.uid = '',
-    state.headers.client = ''
-  },
+  resetHeader(state){
+    state.header.uid = '',
+    state.header.client = '',
+    state.header.accessToken = ''
+  }
 };
 
 const actions = {
   setHeader({ commit }, headers){
-    commit('login', headers)
+    commit('setHeader', headers)
   },
   resetHeader({ commit }){
-    commit('logout')
+    commit('resetHeader')
   }
 };
 
