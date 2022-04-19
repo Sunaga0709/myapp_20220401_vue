@@ -6,5 +6,5 @@
 ・vuetify 2.6.0<br>
 ・Docker 20.10.13<br>
 
-[URL](http://54.249.194.174/)<br>
-[バックエンドリポジトリ](https://github.com/Sunaga0709/myapp_20220401_rails)<br.
+[ポートフォリオURL](http://54.249.194.174/)<br>
+[バックエンドリポジトリ](https://github.com/Sunaga0709/myapp_20220401_rails)<br>
