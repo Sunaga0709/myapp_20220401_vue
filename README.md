@@ -1,5 +1,5 @@
 #### バージョン
-・node　14.15.0<br>
+・node 14.15.0<br>
 ・vue 2.6.1<br>
 ・vuex 3.4.0<br>
 ・axios 0.26.1<br>
