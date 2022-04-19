@@ -1,24 +1,10 @@
-# app
+#### バージョン
+・node　14.15.0<br>
+・vue 2.6.1<br>
+・vuex 3.4.0<br>
+・axios 0.26.1<br>
+・vuetify 2.6.0<br>
+・Docker 20.10.13
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[URL](http://54.249.194.174/)
+[バックエンドリポジトリ](https://github.com/Sunaga0709/myapp_20220401_rails)
